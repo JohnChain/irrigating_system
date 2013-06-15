@@ -29,12 +29,19 @@ class serial_operator(object):
             insert_data.sensor_id  = int(msg.get_sensor_type())
             insert_data.data       = int(msg.get_sensor_value())
 
-            #if insert_data.sensor_id == d_sensor_set["THERMISTOR"]:
-                #insert_data.data = float("%.2f" % Celsius(insert_data.data))
+            if insert_data.sensor_id == d_sensor_set["THERMISTOR"]:
+                insert_data.data = float("%.2f" % Celsius(insert_data.data))
             #print msg
+            #if insert_data.sensor_id == 3:
+                #print "###### GET ONE SENSE MESSAGE #######"
+                #print "# node_id   = %d" % insert_data.node_id
+                #print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
+                #print "# data      = %d" % insert_data.data
+                #print "####################################"
+
             print "###### GET ONE SENSE MESSAGE #######"
             print "# node_id   = %d" % insert_data.node_id
-            print "# sensor_id = %s" % d_sensor_num_to_name[str(insert_data.sensor_id)]
+            print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
             print "# data      = %d" % insert_data.data
             print "####################################"
             #try:
@@ -43,26 +50,28 @@ class serial_operator(object):
                 db_op.db_connect()
                 db_op.db_insert_data(insert_data)
                 db_op.db_close()
-                print "DB <<<<<<<<< ONE DATA INSERTED"
+                #print "DB <<<<<<<<< ONE DATA INSERTED"
             #except sqlite3.OperationalError, e:
                 #print e
 
         elif msg.get_amType() == reply_msg.AM_TYPE:
-            print msg
+            #print msg
             task_finished = t_update_task()
             task_finished.transaction_number = int(msg.get_transaction_number())
             task_finished.status             = int(msg.get_status())
 
             task_finished.node_id            = int(msg.get_node_id())
             task_finished.sensor_id          = int(msg.get_request_device())
-            task_finished.request_code       = int(msg.get_request_code())
-            task_finished.request_data       = int(msg.get_request_data())
+            task_finished.operation_code     = int(msg.get_request_code())
+            task_finished.operation_data     = int(msg.get_request_data())
 
             print "****** GET ON REPLY MESSAGE ********"
-            print "* transaction_number = %d" % int(msg.get_transaction_number())
-            print "* node_id            = %d" % int(msg.get_node_id())
-            print "* status             = %d" % int(msg.get_status())
-            print "* remark             = %d" % int(msg.get_remark())
+            print "* transaction_number = %d" % task_finished.transaction_number
+            print "* node_id            = %d" % task_finished.node_id
+            print "* sensor_id          = %d [%s]" % (task_finished.sensor_id, d_sensor_num_to_name[str(task_finished.sensor_id)])
+            print "* request_code       = %d [%s]" % (task_finished.operation_code, d_request_code_to_name[str(task_finished.operation_code)])
+            print "* request_data       = %d" % task_finished.operation_data
+            print "* status             = %d" % task_finished.status
             print "************************************"
 
             self.thread_mag.upword(task_finished)

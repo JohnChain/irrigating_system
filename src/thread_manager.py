@@ -46,10 +46,10 @@ class thread_manager(object):
             #while True:
             if 1:
                 db_op.db_connect()
-                print "TASK_DICT: ", str(task_mag.task_dict)
+                #print "TASK_DICT: ", str(task_mag.task_dict)
                 #transaction_number = raw_input("Please input the transaction_number:")
                 task_mag.finish_task(db_op, task_finished)
-                update_tb_sensor_state(db_op, task_finished)
+                task_mag.update_tb_sensor_state(db_op, task_finished)
                 db_op.db_close()
         #finally:
             #print "Upword thread finished"

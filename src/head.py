@@ -42,6 +42,7 @@ d_switcher = {
     }
 
 d_sensor_set = {
+    "PUMP"           : 0, #水泵
     "SOLENOIDVALVES" : 1, # 电磁阀门
     "YL69"           : 2, # 土壤湿度传感器
     "LIGHT"          : 3, # 光照
@@ -49,14 +50,33 @@ d_sensor_set = {
     "DS18B20"        : 5, # 土壤中的温度
     }
 
+d_sensor_num_to_name = {
+    "0" : "PUMP"          , #水泵
+    "1" : "SOLENOIDVALVES", # 电磁阀门
+    "2" : "YL69"          , # 土壤湿度传感器
+    "3" : "LIGHT"         , # 光照
+    "4" : "THERMISTOR"    , # 空气中的温度
+    "5" : "DS18B20"       , # 土壤中的温度
+    }
+
 d_request_code = {
-    "SET_SWITCH_STATUS_REQUEST"     : 0x01, # 设置传感器开关
-    "GET_SWITCH_STATUS_REQUEST"     : 0x02, # 获取开关状态
-    "GET_READING_REQUEST      "     : 0x03, # 获取传感器采集的数据
-    "SET_READING_PERIOD_REQUEST"    : 0x04, # 设置采集的周期
-    "GET_READING_PERIOD_REQUEST"    : 0x05, # 获取采集的周期
-    "SET_READING_THRESHOLD_REQUEST" : 0x06, # 设置阈值
-    "GET_READING_THRESHOLD_REQUEST" : 0x07, # 获取阈值
+    "SET_SWITCH_STATUS_REQUEST"     : 1, # 设置传感器开关
+    "GET_SWITCH_STATUS_REQUEST"     : 2, # 获取开关状态
+    "GET_READING_REQUEST      "     : 3, # 获取传感器采集的数据
+    "SET_READING_PERIOD_REQUEST"    : 4, # 设置采集的周期
+    "GET_READING_PERIOD_REQUEST"    : 5, # 获取采集的周期
+    "SET_READING_THRESHOLD_REQUEST" : 6, # 设置阈值
+    "GET_READING_THRESHOLD_REQUEST" : 7, # 获取阈值
+    }
+
+d_request_code_to_name = {
+    "1" : "SET_SWITCH_STATUS_REQUEST"    , # 设置传感器开关
+    "2" : "GET_SWITCH_STATUS_REQUEST"    , # 获取开关状态
+    "3" : "GET_READING_REQUEST      "    , # 获取传感器采集的数据
+    "4" : "SET_READING_PERIOD_REQUEST"   , # 设置采集的周期
+    "5" : "GET_READING_PERIOD_REQUEST"   , # 获取采集的周期
+    "6" : "SET_READING_THRESHOLD_REQUEST", # 设置阈值
+    "7" : "GET_READING_THRESHOLD_REQUEST", # 获取阈值
     }
 
 d_default_data = {

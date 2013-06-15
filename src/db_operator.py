@@ -16,12 +16,15 @@ class db_operator(object):
         return self.handler, self.select_cur, self.update_cur, self.insert_cur
 
     def db_init(self):
-        try:
+        #try:
+        if 1:
             for line in open(MYSQL_SQL_PATH):
-                self.update_cur.execute(line)
-            self.handler.commit()
-        except sqlite3.OperationalError, e:
-            print e
+                #self.update_cur.execute(line)
+            #self.handler.commit()
+                print "^^^^^^^^^^^^^^^^^"
+                print line
+        #except sqlite3.OperationalError, e:
+            #print e
 
     ###################################################################
     def db_insert_data(self, data):
@@ -212,7 +215,7 @@ class db_operator(object):
         self.handler.commit()
         return result
 
-    def db_update_certain_sensor_state(self, request_code, condition):
+    def db_update_certain_sensor_state(self, sensor_name, condition):
         '''condition:
                 node_id
                 sensor_id
@@ -220,9 +223,9 @@ class db_operator(object):
         '''
         str_sql = r'''
                     update tb_sensor_state
-                    set '%s' = %d
+                    set %s = %d
                     where  node_id = %d and sensor_id = %d
-                ''' %(request_code, condition.state, condition.node_id, condition.sensor_id)
+                ''' %(sensor_name, condition.operation_data, condition.node_id, condition.sensor_id)
         result = self.update_cur.execute(str_sql)
         self.handler.commit()
         return result
@@ -242,64 +245,64 @@ class db_operator(object):
 
 def main():
     ############################ Testing Data #######################################
-    command_time = datetime.now().strftime("%Y%m%d%H%M%S")
+    #command_time = datetime.now().strftime("%Y%m%d%H%M%S")
 
-    insert_data = t_insert_data()
-    insert_data.node_id     = 3
-    insert_data.sensor_id   = d_sensor_set["LIGHT"]
-    insert_data.data        = 3
+    #insert_data = t_insert_data()
+    #insert_data.node_id     = 3
+    #insert_data.sensor_id   = d_sensor_set["LIGHT"]
+    #insert_data.data        = 3
 
-    select_sensor_state = t_select_sensor_state()
-    select_sensor_state.node_id             = 3
+    #select_sensor_state = t_select_sensor_state()
+    #select_sensor_state.node_id             = 3
 
-    insert_sensor_state                     = t_insert_sensor_state()
-    insert_sensor_state.node_id             = 1
-    insert_sensor_state.sensor_id           = d_sensor_set["YL69"]
-    insert_sensor_state.switcher            = d_switcher["ON"]
-    insert_sensor_state.capture_frequency   = 2
-    insert_sensor_state.threshold           = 4
+    #update_sensor_state                     = t_update_sensor_state()
+    #update_sensor_state.node_id             = 1
+    #update_sensor_state.sensor_id           = d_sensor_set["YL69"]
+    #update_sensor_state.switcher            = d_switcher["ON"]
+    #update_sensor_state.capture_frequency   = 2
+    #update_sensor_state.threshold           = 4
 
-    select_history_data = t_select_history_data()
-    select_history_data.node_id     = 3
-    select_history_data.start_time  = '20130605102821'
-    select_history_data.end_time    = command_time
+    #select_history_data = t_select_history_data()
+    #select_history_data.node_id     = 3
+    #select_history_data.start_time  = '20130605102821'
+    #select_history_data.end_time    = command_time
 
-    insert_task = t_insert_task()
-    insert_task.transaction_number  = r'90CE96FE-ACF7-404E-A68F-46531118E013'
-    insert_task.node_id             = 1
-    insert_task.sensor_id           = d_sensor_set["SOLENOIDVALVES"]
-    insert_task.operation_code      = 1
-    insert_task.operation_data      = 1
-    insert_task.status = d_task_status["SUBMITTING"]
+    #insert_task = t_insert_task()
+    #insert_task.transaction_number  = r'90CE96FE-ACF7-404E-A68F-46531118E013'
+    #insert_task.node_id             = 1
+    #insert_task.sensor_id           = d_sensor_set["SOLENOIDVALVES"]
+    #insert_task.operation_code      = 1
+    #insert_task.operation_data      = 1
+    #insert_task.status = d_task_status["SUBMITTING"]
 
-    select_task_status                      = t_select_task_status()
-    select_task_status.transaction_number   = command_time
+    #select_task_status                      = t_select_task_status()
+    #select_task_status.transaction_number   = command_time
 
-    select_task                             = t_select_task()
-    status                                  = d_task_status["SUBMITTING"]
+    #select_task                             = t_select_task()
+    #status                                  = d_task_status["SUBMITTING"]
 
-    select_all_history_data                 = select_sensor_state
-    select_all_history_data.node_id         = 3
+    #select_all_history_data                 = select_sensor_state
+    #select_all_history_data.node_id         = 3
 
-    update_task                             = t_update_task()
-    update_task.transaction_number          = command_time
-    update_task.status                      = d_task_status["SUCCEED"]
+    #update_task                             = t_update_task()
+    #update_task.transaction_number          = command_time
+    #update_task.status                      = d_task_status["SUCCEED"]
     ################################################################################
 
 
     db = db_operator()
-    db.db_connect()
-    db.select_cur.execute("select version()")
-    vers = db.select_cur.fetchone()
-    print "database version is: %s" %vers
+    #db.db_connect()
+    #db.select_cur.execute("select version()")
+    #vers = db.select_cur.fetchone()
+    #print "database version is: %s" %vers
     db.db_init()
     #try:
         #db.db_init()
     #except sqlite3.OperationalError, e:
         #print e
-    try:
+    #try:
         #db.db_insert_data(insert_data)
-        db.db_insert_task(insert_task)
+        #db.db_insert_task(insert_task)
         #db.db_insert_sensor_state(insert_sensor_state)
         #db.db_update_task(update_task)
 
@@ -324,8 +327,8 @@ def main():
         #print "select all node: %r" % str(list(result8.fetchall()))
 
         #print '%r' %command_time
-    finally:
-        db.db_close()
+    #finally:
+        #db.db_close()
 
 if __name__ == '__main__':
     main()

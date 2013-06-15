@@ -56,11 +56,11 @@ class DataLogger():
         task_to_commit["sensor_id"] = 1
         task_to_commit["operation_code"] = 1
         while 1:
-            task_to_commit["operation_data"] = 0
-            self.send(task_to_commit)
-            time.sleep(5)
-            task_to_commit["operation_data"] = 1
-            self.send(task_to_commit)
+            #task_to_commit["operation_data"] = 0
+            #self.send(task_to_commit)
+            #time.sleep(5)
+            #task_to_commit["operation_data"] = 1
+            #self.send(task_to_commit)
             time.sleep(5)
             #task_to_commit["operation_data"] = 2
             #self.send(task_to_commit)

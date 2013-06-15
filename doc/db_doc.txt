@@ -1,0 +1,115 @@
+【注：请关注文档尾部的更新历史，本文将不断更新】
+
+table: tb_realtime_data
+    node_id     sensor_id   data    insert_time
+
+table: tb_sensor_state
+    node_id     sensor_id   switcher    capture_frequency   threshold   insert_time
+
+table: tb_history_data
+    record_id   insert_time node_id     sensor_id   data
+
+table: tb_task
+    transaction_number  node_id     sensor_id   operation_code  operation_data  status  remark  reversed insert_time
+
+数据库操作类依然为：db_operator
+
+Insert Function:
+    db_insert_task(task)
+        class task:
+            transaction_number
+            node_id
+            sensor_id
+            operation_code
+            operation_data    
+            status
+
+    db_insert_record(record)
+        class record:
+            insert_time
+            node_id
+            sensor_id
+            data
+
+
+Select Function: （以下所有类中的所有字段均为查询条件）
+	//查看实时数据，注：一次查询节点node_id的所有数据
+    db_select_realtime_data(condition)
+        class condition:
+            node_id
+            
+    // 查看历史数据：节点node_id采集的 start_time 到 end_time 时间内的数据
+	db_select_history_data(condition)
+        class condition:
+            node_id
+            start_time
+            end_time
+	// 查看历史数据：节点node_id 所有历史数据
+	db_select_all_history_data(condition)
+        class condition:
+            node_id
+	
+	// 查看 node_id 节点所有传感器的状态
+    db_select_sensor_state(condition)
+        class condition:
+            node_id
+
+	// 查看事务号transaction_number 的执行状态【前台server使用】
+    db_select_task_status(condition)
+        class condition:
+            transaction_number
+	
+	// 提取事务表中状态为 status 的记录【后台server使用】
+	db_select_task(condition)
+        class condition:
+	        status
+        
+    db_select_node_sensor(node_id)
+        node_id
+
+    db_select_node()
+
+Update Function:
+	// 更新事务执行状态， transaction_number 为更新条件，status为要更改的项目
+    db_update_task(condition)
+        class condition:
+            transaction_number
+            status
+	
+	// 更形设备的工作状态， node_id 和sensor_id 为条件， 其余为更新项
+    db_update_sensor_state(condition)
+        class condition:
+            node_id
+            sensor_id
+            switcher
+            capture_frequency
+            threshold
+
+
+注：	1、所有时间数据为字符串类型，格式为：" YYYY-MM-DD HH:mm:SS " ；
+    2、始终为整数类型的字段有：node_id、sensor_id ；
+    3、operation_code:
+        1  SET_SWITCH_STATUS_REQUEST       // 设置传感器开关
+        2  GET_SWITCH_STATUS_REQUEST       // 获取开关状态
+        3  GET_READING_REQUEST             // 获取传感器采集的数据
+        4  SET_READING_PERIOD_REQUEST      // 设置采集的周期
+        5  GET_READING_PERIOD_REQUEST      // 获取采集的周期
+        6  SET_READING_THRESHOLD_REQUEST   // 设置阈值
+        7  GET_READING_THRESHOLD_REQUEST   // 获取阈值
+     其中只用到 SET 命令的操作代号 ；
+    4、operation_data 只有在operation_code 命令需要设置参数时才给出，否则默认为NULL;
+
+    
+V1： 【2013-06-05】
+	1、文档创建于2013-06-05；
+    
+V2： 【2013-06-06】
+	1、更新 tb_realtime 和tb_history 表名依次为 ： tb_realtime_data 和 tb_history_data
+	2、增加部分说明；
+
+V3： 【2013-06-07】
+	1、添加 db_select_all_history_data() 到db_operator 类；
+V4: 2013-06-11:
+    1. add function db_select_node_sensor 
+    2. add head.py file 
+    3. add function db_select_node

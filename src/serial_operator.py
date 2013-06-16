@@ -32,12 +32,12 @@ class serial_operator(object):
             if insert_data.sensor_id == d_sensor_set["THERMISTOR"]:
                 insert_data.data = float("%.2f" % Celsius(insert_data.data))
             #print msg
-            if insert_data.sensor_id == 4:
-                print "###### GET ONE SENSE MESSAGE #######"
-                print "# node_id   = %d" % insert_data.node_id
-                print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
-                print "# data      = %f [ADC = %d] " % (insert_data.data, msg.get_sensor_value())
-                print "####################################"
+            #if insert_data.sensor_id == 4:
+                #print "###### GET ONE SENSE MESSAGE #######"
+                #print "# node_id   = %d" % insert_data.node_id
+                #print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
+                #print "# data      = %f [ADC = %d] " % (insert_data.data, msg.get_sensor_value())
+                #print "####################################"
 
             #print "###### GET ONE SENSE MESSAGE #######"
             #print "# node_id   = %d" % insert_data.node_id

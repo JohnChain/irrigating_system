@@ -32,18 +32,18 @@ class serial_operator(object):
             if insert_data.sensor_id == d_sensor_set["THERMISTOR"]:
                 insert_data.data = float("%.2f" % Celsius(insert_data.data))
             #print msg
-            #if insert_data.sensor_id == 3:
-                #print "###### GET ONE SENSE MESSAGE #######"
-                #print "# node_id   = %d" % insert_data.node_id
-                #print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
-                #print "# data      = %d" % insert_data.data
-                #print "####################################"
+            if insert_data.sensor_id == 4:
+                print "###### GET ONE SENSE MESSAGE #######"
+                print "# node_id   = %d" % insert_data.node_id
+                print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
+                print "# data      = %f [ADC = %d] " % (insert_data.data, msg.get_sensor_value())
+                print "####################################"
 
-            print "###### GET ONE SENSE MESSAGE #######"
-            print "# node_id   = %d" % insert_data.node_id
-            print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
-            print "# data      = %d" % insert_data.data
-            print "####################################"
+            #print "###### GET ONE SENSE MESSAGE #######"
+            #print "# node_id   = %d" % insert_data.node_id
+            #print "# sensor_id = %d [%s]" % (insert_data.sensor_id, d_sensor_num_to_name[str(insert_data.sensor_id)])
+            #print "# data      = %d" % insert_data.data
+            #print "####################################"
             #try:
             if 1:
                 db_op = db_operator()
@@ -63,14 +63,21 @@ class serial_operator(object):
             task_finished.node_id            = int(msg.get_node_id())
             task_finished.sensor_id          = int(msg.get_request_device())
             task_finished.operation_code     = int(msg.get_request_code())
-            task_finished.operation_data     = int(msg.get_request_data())
+
+            operation_data = int(msg.get_request_data())
+            if task_finished.sensor_id == d_sensor_set["THERMISTOR"] and \
+                    task_finished.operation_code == d_request_code["SET_READING_THRESHOLD_REQUEST"]:
+                operation_data = Celsius(operation_data)
+            task_finished.operation_data     = operation_data
 
             print "****** GET ON REPLY MESSAGE ********"
             print "* transaction_number = %d" % task_finished.transaction_number
             print "* node_id            = %d" % task_finished.node_id
+            print "* sensor_id  " , task_finished.sensor_id
             print "* sensor_id          = %d [%s]" % (task_finished.sensor_id, d_sensor_num_to_name[str(task_finished.sensor_id)])
+            print "* request_code ", task_finished.operation_code
             print "* request_code       = %d [%s]" % (task_finished.operation_code, d_request_code_to_name[str(task_finished.operation_code)])
-            print "* request_data       = %d" % task_finished.operation_data
+            print "* request_data       = %d [ADC = %d]" % (task_finished.operation_data, msg.get_request_data())
             print "* status             = %d" % task_finished.status
             print "************************************"
 

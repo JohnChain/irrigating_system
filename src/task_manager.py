@@ -18,13 +18,18 @@ class task_manager():
                     self.task_to_commit["node_id"] = self.task_dict[key]["node_id"]
                     self.task_to_commit["sensor_id"] = self.task_dict[key]["sensor_id"]
                     self.task_to_commit["operation_code"] = self.task_dict[key]["operation_code"]
-                    self.task_to_commit["operation_data"] = self.task_dict[key]["operation_data"]
+
+                    data = self.task_dict[key]["operation_data"]
+                    if self.task_to_commit["sensor_id"] == d_sensor_set["THERMISTOR"] and \
+                        self.task_to_commit["operation_code"] == d_request_code["SET_READING_THRESHOLD_REQUEST"]:
+                        data = d_temp_to_ADC[str(data)]
+                    self.task_to_commit["operation_data"] = data
                     self.task_to_commit["transaction_number"] = int(key)
                     print "Next step will send task: number = %s" % (self.task_to_commit["transaction_number"])
 
                     if f_send != None:
                         f_send(self.task_to_commit)
-                        sleep(0.8)
+                        sleep(0.1)
             except KeyError, e:
                 pass
 

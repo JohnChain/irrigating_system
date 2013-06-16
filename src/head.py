@@ -9,6 +9,8 @@ import threading
 from time import sleep
 from datetime import datetime
 
+from ADC_lib import *
+
 MAX_TASK_ID     = 65535
 DB_PATH         = "../db/irrigating_system.db"
 MYSQL_SQL_PATH  = "../db/mysql_creater.sql"
@@ -42,21 +44,21 @@ d_switcher = {
     }
 
 d_sensor_set = {
-    "PUMP"           : 0, #水泵
     "SOLENOIDVALVES" : 1, # 电磁阀门
     "YL69"           : 2, # 土壤湿度传感器
     "LIGHT"          : 3, # 光照
     "THERMISTOR"     : 4, # 空气中的温度
     "DS18B20"        : 5, # 土壤中的温度
+    "PUMP"           : 6, #水泵
     }
 
 d_sensor_num_to_name = {
-    "0" : "PUMP"          , #水泵
     "1" : "SOLENOIDVALVES", # 电磁阀门
     "2" : "YL69"          , # 土壤湿度传感器
     "3" : "LIGHT"         , # 光照
     "4" : "THERMISTOR"    , # 空气中的温度
     "5" : "DS18B20"       , # 土壤中的温度
+    "6" : "PUMP"          , #水泵
     }
 
 d_request_code = {
@@ -136,16 +138,4 @@ class t_update_task():
     operation_code = 0
     operation_data = 0
     status = 0
-
-def Celsius(ADC):
-    from math import log, pow
-    ADC    = float(ADC)
-    ADC_FS = 1023
-    R1     = 10000
-    A      = 0.00130705
-    B      = 0.000214381
-    C      = 0.000000093
-    Rthr   = R1 * (ADC_FS - ADC) / ADC
-    result = float((1 / (A + B * log(Rthr) + C * pow(log(Rthr), 3))) - 273.15)
-    return result
 

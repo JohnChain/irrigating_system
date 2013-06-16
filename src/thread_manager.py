@@ -31,7 +31,7 @@ class thread_manager(object):
                 task_mag.build_task_list(db_op)
                 task_mag.commit_task(db_op, f_send)
                 db_op.db_close()
-                sleep(1)
+                sleep(0.5)
         #except Exception, e:
             #print e
         finally:
